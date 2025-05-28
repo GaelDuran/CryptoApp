@@ -1,4 +1,4 @@
-package com.example.criptoapp.presentation.screens
+package com.example.criptoapp.presentation.screens.auth
 
 import androidx.compose.foundation.Image
 import com.example.criptoapp.R
@@ -43,6 +43,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.criptoapp.presentation.components.Visibility
 import com.example.criptoapp.presentation.components.Visibility_off
+import com.example.criptoapp.presentation.navigation.LoginScreenRoute
+import com.example.criptoapp.presentation.navigation.MainScreenRoute
 import com.example.criptoapp.presentation.navigation.RegisterScreenRoute
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
 
@@ -126,7 +128,11 @@ fun LoginScreen(navController: NavController) {
         )
         //Boton de Iniciar Sesion
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate(MainScreenRoute){
+                    popUpTo(LoginScreenRoute){ inclusive = true}
+                }
+            },
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .fillMaxWidth()

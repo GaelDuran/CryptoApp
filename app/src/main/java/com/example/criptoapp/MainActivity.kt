@@ -4,20 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.criptoapp.presentation.screens.LoginScreen
+import com.example.criptoapp.presentation.navigation.LoginScreenRoute
+import com.example.criptoapp.presentation.navigation.MainGraph
+import com.example.criptoapp.presentation.navigation.MainScreenRoute
+import com.example.criptoapp.presentation.navigation.RegisterScreenRoute
+import com.example.criptoapp.presentation.screens.auth.LoginScreen
+import com.example.criptoapp.presentation.screens.auth.RegisterScreen
+import com.example.criptoapp.presentation.screens.main.MainScreen
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
-import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +25,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CriptoAppTheme {
-                val NavController = rememberNavController()
-                NavHost(navController = NavController, startDestination = LoginScreenRoute){
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = LoginScreenRoute) {
                     composable<LoginScreenRoute> {
-                        LoginScreen()
+                        LoginScreen(navController = navController)
+                    }
+                    composable<RegisterScreenRoute> {
+                        RegisterScreen(innerPadding = PaddingValues(20.dp))
+                    }
+                    navigation<MainGraph>(startDestination = MainScreenRoute){
+                        composable<MainScreenRoute> {
+                            MainScreen()
+                        }
+
                     }
                 }
             }
@@ -37,5 +46,4 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Serializable
-object LoginScreenRoute
+

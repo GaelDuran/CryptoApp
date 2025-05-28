@@ -1,11 +1,11 @@
 package com.example.criptoapp.presentation.screens
 
 import androidx.compose.foundation.Image
-import com.example.criptoapp.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,18 +40,30 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.criptoapp.R
 import com.example.criptoapp.presentation.components.Visibility
 import com.example.criptoapp.presentation.components.Visibility_off
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
 
 @Composable
-fun LoginScreen() {
+fun RegisterScreen(innerPadding: PaddingValues) {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var confirmPassword by remember {
+        mutableStateOf("")
+    }
 
     var password by remember {
         mutableStateOf("")
     }
 
     var isPasswordVisible by remember {
+        mutableStateOf(false)
+    }
+    var isConfirmPasswordVisible by remember {
         mutableStateOf(false)
     }
 
@@ -72,15 +85,15 @@ fun LoginScreen() {
         )
         // Imagen
         Image(
-            painter = painterResource(R.drawable.crypto1),
+            painter = painterResource(R.drawable.crypto3),
             contentDescription = "Login",
             modifier = Modifier.size(250.dp),
             contentScale = ContentScale.Crop
         )
         // Textfield Correo
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email,
+            onValueChange = { email = it},
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Email,
@@ -121,41 +134,68 @@ fun LoginScreen() {
             visualTransformation = if (isPasswordVisible) VisualTransformation.None
             else PasswordVisualTransformation()
         )
+        // Textfield Contreseña
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = "contraseña"
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = if(isConfirmPasswordVisible) Visibility_off
+                    else Visibility,
+                    contentDescription = "contraseña",
+                    modifier = Modifier.clickable {
+                        isConfirmPasswordVisible = !isConfirmPasswordVisible
+                    }
+                )
+            },
+            placeholder = { Text (text = "Confirmar contraseña") },
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None
+            else PasswordVisualTransformation()
+        )
+        
+        if(confirmPassword.isEmpty() && (password != confirmPassword)){
+            Text(
+                text = "Las contraseñas no coinciden",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+        }
+
         //Boton de Iniciar Sesion
         Button(
             onClick = {},
+            enabled = (password == confirmPassword)
+                    && email.isNotBlank()
+                    && password.isNotBlank()
+                    && confirmPassword.isNotBlank(),
             modifier = Modifier
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp, top = 20.dp)
                 .fillMaxWidth()
                 .height(40.dp)
 
         ) {
             Text(
-                text = "Inciar Sesion"
+                text = "Registrarse"
             )
         }
-        // Texto crear cuenta
-        Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(MaterialTheme.colorScheme.onBackground)) {
-                    append("¿No tienes una cuenta? ")
-                }
-                pushStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                append("Crea una")
-            }
-        )
     }
 }
 
-@Composable
 @Preview
-fun LoginScreenPreview() {
+@Composable
+fun RegisterScreenPreview() {
     CriptoAppTheme {
-        LoginScreen()
+        RegisterScreen(innerPadding = PaddingValues(10.dp))
     }
 }

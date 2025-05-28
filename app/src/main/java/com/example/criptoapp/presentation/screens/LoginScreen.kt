@@ -30,9 +30,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -121,15 +124,30 @@ fun LoginScreen() {
         //Boton de Iniciar Sesion
         Button(
             onClick = {},
-            modifier = Modifier.fillMaxWidth().height(40.dp)
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .fillMaxWidth()
+                .height(40.dp)
+
         ) {
             Text(
-                text = "Inciiar sesion"
+                text = "Inciar Sesion"
             )
         }
         // Texto crear cuenta
         Text(
-            text= "¿No tienes cuenta? Crea una",
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(MaterialTheme.colorScheme.onBackground)) {
+                    append("¿No tienes una cuenta? ")
+                }
+                pushStyle(
+                    SpanStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                append("Crea una")
+            }
         )
     }
 }

@@ -12,8 +12,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    const val BASE_URL = "https://cryptoapi.juanfrausto.com/"
     // String / AuthServices
-
     @Provides
     @Singleton
     fun providesATestingString(): String {
@@ -24,7 +24,7 @@ object AppModule {
     @Singleton
     fun providesRetrofitInstance() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

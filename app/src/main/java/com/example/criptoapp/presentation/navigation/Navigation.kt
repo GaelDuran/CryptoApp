@@ -2,20 +2,22 @@ package com.example.criptoapp.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object LoginScreenRoute
+sealed class Screens () {
+    @Serializable
+    object LoginScreenRoute : Screens()
 
-@Serializable
-object RegisterScreenRoute
+    @Serializable
+    object RegisterScreenRoute : Screens()
 
-@Serializable
-object MainScreenRoute
+    @Serializable
+    object MainScreenRoute : Screens()
 
-@Serializable
-object MainGraph
+    @Serializable
+    object MainGraph : Screens()
 
-@Serializable
-object HomeScreenRoute
+    @Serializable
+    object HomeScreenRoute : Screens()
 
-@Serializable
-object StatsScreenRoute
+    @Serializable
+    object StatsScreenRoute : Screens()
+}

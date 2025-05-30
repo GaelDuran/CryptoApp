@@ -43,10 +43,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.criptoapp.presentation.components.Visibility
 import com.example.criptoapp.presentation.components.Visibility_off
-import com.example.criptoapp.presentation.navigation.LoginScreenRoute
-import com.example.criptoapp.presentation.navigation.MainScreenRoute
-import com.example.criptoapp.presentation.navigation.RegisterScreenRoute
+import com.example.criptoapp.presentation.navigation.Screens
+import com.example.criptoapp.presentation.navigation.Screens.LoginScreenRoute
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
+
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -54,6 +54,8 @@ fun LoginScreen(navController: NavController) {
     var password by remember {
         mutableStateOf("")
     }
+
+
 
     var isPasswordVisible by remember {
         mutableStateOf(false)
@@ -129,7 +131,7 @@ fun LoginScreen(navController: NavController) {
         //Boton de Iniciar Sesion
         Button(
             onClick = {
-                navController.navigate(MainScreenRoute){
+                navController.navigate(Screens.MainScreenRoute){
                     popUpTo(LoginScreenRoute){ inclusive = true}
                 }
             },
@@ -158,7 +160,7 @@ fun LoginScreen(navController: NavController) {
                 append("Crea una")
             },
             modifier = Modifier.clickable{
-                navController.navigate(RegisterScreenRoute)
+                navController.navigate(Screens.RegisterScreenRoute)
             }
         )
     }

@@ -39,6 +39,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.criptoapp.presentation.components.Visibility
@@ -46,16 +47,20 @@ import com.example.criptoapp.presentation.components.Visibility_off
 import com.example.criptoapp.presentation.navigation.Screens
 import com.example.criptoapp.presentation.navigation.Screens.LoginScreenRoute
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
+import com.example.criptoapp.presentation.viewmodels.OtroTestingViewModel
+import com.example.criptoapp.presentation.viewmodels.TestingViewModel
 
 
 @Composable
 fun LoginScreen(navController: NavController) {
 
+    val viewModel : TestingViewModel = hiltViewModel()
+
+    val otroViewModel : OtroTestingViewModel = hiltViewModel()
+
     var password by remember {
         mutableStateOf("")
     }
-
-
 
     var isPasswordVisible by remember {
         mutableStateOf(false)

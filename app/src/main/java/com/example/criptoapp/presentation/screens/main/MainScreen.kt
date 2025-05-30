@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.criptoapp.presentation.navigation.HomeScreenRoute
+import com.example.criptoapp.presentation.navigation.Screens
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
 
 @Composable
@@ -17,8 +17,8 @@ fun MainScreen(){
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        NavHost(navController = navController, startDestination = HomeScreenRoute){
-            composable <HomeScreenRoute> {
+        NavHost(navController = navController, startDestination = Screens.HomeScreenRoute){
+            composable <Screens.HomeScreenRoute> {
                 HomeScreen(innerPadding = innerPadding)
             }
 

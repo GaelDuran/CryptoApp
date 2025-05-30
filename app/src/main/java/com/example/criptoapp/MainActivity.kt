@@ -10,15 +10,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.criptoapp.presentation.navigation.LoginScreenRoute
-import com.example.criptoapp.presentation.navigation.MainGraph
-import com.example.criptoapp.presentation.navigation.MainScreenRoute
-import com.example.criptoapp.presentation.navigation.RegisterScreenRoute
+import com.example.criptoapp.presentation.navigation.Screens
 import com.example.criptoapp.presentation.screens.auth.LoginScreen
 import com.example.criptoapp.presentation.screens.auth.RegisterScreen
 import com.example.criptoapp.presentation.screens.main.MainScreen
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,15 +25,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             CriptoAppTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = LoginScreenRoute) {
-                    composable<LoginScreenRoute> {
+                NavHost(navController = navController, startDestination = Screens.LoginScreenRoute) {
+                    composable<Screens.LoginScreenRoute> {
                         LoginScreen(navController = navController)
                     }
-                    composable<RegisterScreenRoute> {
+                    composable<Screens.RegisterScreenRoute> {
                         RegisterScreen(innerPadding = PaddingValues(20.dp))
                     }
-                    navigation<MainGraph>(startDestination = MainScreenRoute){
-                        composable<MainScreenRoute> {
+                    navigation<Screens.MainGraph>(startDestination = Screens.MainScreenRoute){
+                        composable<Screens.MainScreenRoute> {
                             MainScreen()
                         }
 

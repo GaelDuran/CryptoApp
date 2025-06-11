@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
@@ -31,10 +33,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.criptoapp.domain.models.Transaction
+import com.example.criptoapp.presentation.components.TransactionItem
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
 
 @Composable
 fun HomeScreen(innerPadding: PaddingValues){
+    val latestTransaction = listOf(
+        Transaction(id = 1, userId = 101, amount = 0.05, date = "2025-06-10", type = 1),
+        Transaction(id = 2, userId = 102, amount = 0.02, date = "2025-06-09", type = 0),
+        Transaction(id = 3, userId = 103, amount = 0.1, date = "2025-06-08", type = 1),
+        Transaction(id = 4, userId = 104, amount = 0.03, date = "2025-06-07", type = 0),
+        Transaction(id = 5, userId = 105, amount = 0.07, date = "2025-06-06", type = 1)
+    )
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -152,6 +164,34 @@ fun HomeScreen(innerPadding: PaddingValues){
                     .height(50.dp)
             ) {
                 Text(text = "Retirar")
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = "Ultimos movimientos",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = "Ver todos",
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        // Ultimos movimientos
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(latestTransaction) {
+                TransactionItem(
+                    amount = it.amount,
+                    date = it.date,
+                    type = it.type
+                )
             }
         }
     }

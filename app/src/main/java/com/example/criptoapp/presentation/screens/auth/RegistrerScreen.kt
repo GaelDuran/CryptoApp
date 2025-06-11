@@ -1,5 +1,6 @@
 package com.example.criptoapp.presentation.screens.auth
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,12 +16,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +41,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.criptoapp.R
 import com.example.criptoapp.presentation.components.Visibility
 import com.example.criptoapp.presentation.components.Visibility_off
+import com.example.criptoapp.presentation.navigation.Screens
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
+import com.example.criptoapp.presentation.viewmodels.AuthViewModel
 
 @Composable
-fun RegisterScreen(innerPadding: PaddingValues) {
+fun RegisterScreen(innerPadding: PaddingValues, navController : NavController) {
+
+    val viewModel : AuthViewModel = hiltViewModel()
 
     var email by remember {
         mutableStateOf("")
@@ -62,6 +73,43 @@ fun RegisterScreen(innerPadding: PaddingValues) {
     }
     var isConfirmPasswordVisible by remember {
         mutableStateOf(false)
+    }
+
+    var showErrorDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var errorMessage by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.registerEvent.collect { result ->
+            Log.i("RegisterScreen", "Recibiendo datillo $result")
+            if(result != "Success"){
+                // Ocurrio un error
+                showErrorDialog =  true
+                errorMessage = result
+            }
+            else {
+                // Que todo esta bien, vamos a navegar al home
+                navController.navigate(Screens.MainScreenRoute){
+                    popUpTo(Screens.RegisterScreenRoute){ inclusive = true }
+                }
+            }
+        }
+    }
+    if (showErrorDialog){
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showErrorDialog = false }) {
+                    Text(text = "Aceptar")
+                }
+            },
+            title = { Text(text = "Error") },
+            text = { Text(text = errorMessage) }
+        )
     }
 
     Column(
@@ -166,12 +214,13 @@ fun RegisterScreen(innerPadding: PaddingValues) {
                 color = Color.Red,
                 style = MaterialTheme.typography.bodyLarge
             )
-
         }
 
-        //Boton de Iniciar Sesion
+        //Boton de registrar
         Button(
-            onClick = {},
+            onClick = {
+                viewModel.register(email = email, password = password)
+            },
             enabled = (password == confirmPassword)
                     && email.isNotBlank()
                     && password.isNotBlank()
@@ -193,6 +242,6 @@ fun RegisterScreen(innerPadding: PaddingValues) {
 @Composable
 fun RegisterScreenPreview() {
     CriptoAppTheme {
-        RegisterScreen(innerPadding = PaddingValues(10.dp))
+        RegisterScreen(innerPadding = PaddingValues(10.dp), navController = rememberNavController())
     }
 }

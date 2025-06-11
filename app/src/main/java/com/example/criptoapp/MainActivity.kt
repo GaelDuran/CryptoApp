@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(navController = navController)
                     }
                     composable<Screens.RegisterScreenRoute> {
-                        RegisterScreen(innerPadding = PaddingValues(20.dp))
+                        RegisterScreen(innerPadding = PaddingValues(20.dp), navController = navController)
                     }
                     navigation<Screens.MainGraph>(startDestination = Screens.MainScreenRoute){
                         composable<Screens.MainScreenRoute> {

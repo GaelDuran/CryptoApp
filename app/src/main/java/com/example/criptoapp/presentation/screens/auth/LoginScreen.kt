@@ -45,18 +45,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.criptoapp.presentation.components.Visibility
 import com.example.criptoapp.presentation.components.Visibility_off
 import com.example.criptoapp.presentation.navigation.Screens
-import com.example.criptoapp.presentation.navigation.Screens.LoginScreenRoute
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.criptoapp.presentation.theme.CriptoAppTheme
-import com.example.criptoapp.presentation.viewmodels.OtroTestingViewModel
-import com.example.criptoapp.presentation.viewmodels.TestingViewModel
+import com.example.criptoapp.presentation.viewmodels.AuthViewModel
 
 
 @Composable
 fun LoginScreen(navController: NavController) {
 
-    val viewModel : TestingViewModel = hiltViewModel()
+    val viewModel: AuthViewModel = hiltViewModel()
 
-    val otroViewModel : OtroTestingViewModel = hiltViewModel()
+    var email by remember {
+        mutableStateOf("")
+    }
 
     var password by remember {
         mutableStateOf("")
@@ -91,8 +92,8 @@ fun LoginScreen(navController: NavController) {
         )
         // Textfield Correo
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email,
+            onValueChange = { email = it },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Email,
@@ -136,9 +137,10 @@ fun LoginScreen(navController: NavController) {
         //Boton de Iniciar Sesion
         Button(
             onClick = {
-                navController.navigate(Screens.MainScreenRoute){
-                    popUpTo(LoginScreenRoute){ inclusive = true}
-                }
+//                navController.navigate(Screens.MainScreenRoute){
+//                    popUpTo(LoginScreenRoute){ inclusive = true}
+//                }
+                viewModel.login(email = email, password = password)
             },
             modifier = Modifier
                 .padding(bottom = 16.dp)
